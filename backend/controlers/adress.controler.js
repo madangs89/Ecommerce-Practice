@@ -1,5 +1,4 @@
 import Address from "../modles/adress.model.js";
-
 export const addAddress = async (req, res) => {
   const user = req.user;
   const {
@@ -40,7 +39,6 @@ export const addAddress = async (req, res) => {
     res.status(500).json({ message: "Server error", success: false });
   }
 };
-
 export const getAddresses = async (req, res) => {
   const user = req.user;
   try {
@@ -58,7 +56,6 @@ export const getAddresses = async (req, res) => {
     res.status(500).json({ message: "Server error", success: false });
   }
 };
-
 export const updateAddress = async (req, res) => {
   const user = req.user;
   const addressId = req.params.id;
@@ -102,7 +99,6 @@ export const updateAddress = async (req, res) => {
     res.status(500).json({ message: "Server error", success: false });
   }
 };
-
 export const deleteAddress = async (req, res) => {
   const user = req.user;
   const addressId = req.params.id;
