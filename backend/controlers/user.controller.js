@@ -25,7 +25,12 @@ export const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
+      {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+      },
       "madangsnaiknavya",
       {
         expiresIn: "7d",
@@ -38,7 +43,7 @@ export const login = async (req, res) => {
     });
     res.status(200).json({
       message: "Login successful",
-      user: { id: user._id, email: user.email, role: user.role },
+      user: { id: user._id, email: user.email, username: user.username, role: user.role },
     });
   } catch (error) {
     console.error(error);
@@ -64,7 +69,7 @@ export const register = async (req, res) => {
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
     const token = jwt.sign(
-      { id: newUser._id, email: newUser.email, role: newUser.role },
+      { id: newUser._id, email: newUser.email,username: newUser.username, role: newUser.role },
       "madangsnaiknavya",
       {
         expiresIn: "7d",
@@ -78,7 +83,7 @@ export const register = async (req, res) => {
     res.status(201).json({
       message: "User registered successfully",
       success: true,
-      user: { id: newUser._id, email: newUser.email, role: newUser.role },
+      user: { id: newUser._id, email: newUser.email, username: newUser.username, role: newUser.role },
     });
   } catch (error) {
     console.error(error);

@@ -80,9 +80,9 @@ const Home = () => {
     // ...more
   ];
   const images = [
-    "https://sp.yimg.com/ib/th/id/OIP.Nv0yUjdd4mALrn8kCzKbKAHaLH?pid=Api&w=148&h=148&c=7&dpr=2&rs=1",
-    "https://sp.yimg.com/ib/th/id/OIP.iCD_PX06BqMuyoB7jIKBewHaJQ?pid=Api&w=148&h=148&c=7&dpr=2&rs=1",
-    "https://sp.yimg.com/ib/th/id/OIP.cSgjmqsQ5KmBQQF9qO-8zQHaFq?pid=Api&w=148&h=148&c=7&dpr=2&rs=1",
+    "https://img2.wallspic.com/previews/4/2/5/8/5/158524/158524-boohoo_x_taylor_hill-taylor_hill-coat-victorias_secret-boohoo-550x310.jpg",
+    "https://img1.wallspic.com/previews/7/3/9/4/6/164937/164937-tatyana_kozelkina-wicked_ways-model-fai_pea-dress-500x.jpg",
+    "https://img1.wallspic.com/previews/0/4/1/8/3/138140/138140-clothing-black-hairstyle-gown-lady-500x.jpg",
   ];
   return (
     <div>

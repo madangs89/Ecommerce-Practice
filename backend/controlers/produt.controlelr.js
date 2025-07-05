@@ -104,6 +104,26 @@ export const updateProduct = async (req, res) => {
   }
 };
 
+export const addManyProducts = async (req, res) => {
+  const products = req.body;
+  try {
+    if (!products) {
+      return res
+        .status(400)
+        .json({ message: "Products array is required", success: false });
+    }
+    const newProducts = await Product.insertMany(products);
+    res.json({
+      success: true,
+      newProducts,
+      message: "Products added successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
 export const deleteProduct = async (req, res) => {
   const id = req.params.id;
 

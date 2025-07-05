@@ -21,7 +21,7 @@ const Carousel = ({ images = [] }) => {
   }, [current]);
 
   return (
-    <div className="relative w-full max-w-8xl mx-auto h-64 sm:h-80 lg:h-[600px] overflow-hidden rounded-xl shadow-md">
+    <div className="relative w-full max-w-7xl my-18 mx-auto h-64 sm:h-80 lg:h-[600px] overflow-hidden  shadow-md">
       {images.map((img, index) => (
         <img
           key={index}
@@ -36,13 +36,13 @@ const Carousel = ({ images = [] }) => {
       {/* Buttons */}
       <button
         onClick={prevSlide}
-        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md"
+        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white  p-2 shadow-md"
       >
         <ChevronLeft size={24} />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md"
+        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white  p-2 shadow-md"
       >
         <ChevronRight size={24} />
       </button>
@@ -52,7 +52,7 @@ const Carousel = ({ images = [] }) => {
         {images.map((_, idx) => (
           <div
             key={idx}
-            className={`w-3 h-3 rounded-full ${
+            className={`w-3 h-3  ${
               idx === current ? "bg-blue-600" : "bg-gray-300"
             }`}
           />
