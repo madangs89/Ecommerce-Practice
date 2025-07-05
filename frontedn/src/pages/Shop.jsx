@@ -1,63 +1,73 @@
-import { useState } from "react";
-import ShopFilters from "../component/ShopFilters";
+import { useSelector } from "react-redux";
 import ProductGrid from "../component/ProductGrid";
-
-
-const allProducts = [
-  {
-    title: "Smartphone",
-    price: 9999,
-    image: "https://via.placeholder.com/400x300?text=Phone",
-    category: "Electronics",
-  },
-  {
-    title: "Sneakers",
-    price: 2999,
-    image: "https://via.placeholder.com/400x300?text=Shoes",
-    category: "Footwear",
-  },
-  {
-    title: "Wrist Watch",
-    price: 1599,
-    image: "https://via.placeholder.com/400x300?text=Watch",
-    category: "Accessories",
-  },
-  {
-    title: "Laptop",
-    price: 49999,
-    image: "https://via.placeholder.com/400x300?text=Laptop",
-    category: "Electronics",
-  },
-];
-
-const categories = ["Electronics", "Footwear", "Accessories"];
-
+import { useEffect, useState } from "react";
 const Shop = () => {
-  const [selected, setSelected] = useState("All");
+  const categories = [
+    "All",
+    "Electronics",
+    "Clothing",
+    "Books",
+    "Home & Kitchen",
+    "jewelery",
+    "women's clothing",
+  ];
+  const [category, setCategory] = useState("All");
+  const data = useSelector((state) => state.product.products);
+  const [shopData, setShopData] = useState([]);
   const [sort, setSort] = useState("");
 
-  const filtered = allProducts.filter((p) =>
-    selected === "All" ? true : p.category === selected
-  );
-  const sorted = [...filtered].sort((a, b) => {
-    if (sort === "low") return a.price - b.price;
-    if (sort === "high") return b.price - a.price;
-    return 0;
-  });
+  const handler = () => {
+    let dat = [...data];
+    if (category && category !== "All") {
+      dat = dat.filter((product) => product.category === category);
+    }
+    if (sort && sort !== "") {
+      switch (sort) {
+        case "lowest":
+          dat = dat.sort((a, b) => a.price - b.price);
+          break;
+        case "highest":
+          dat = dat.sort((a, b) => b.price - a.price);
+          break;
+      }
+    }
+    return dat;
+  };
+
+  useEffect(() => {
+    const data = handler();
+    setShopData(data);
+  }, [category, data, sort]);
 
   return (
-    <div className="max-w-7xl mx-auto mt-10 px-4 py-10">
-      <h1 className="text-2xl font-bold mb-6">🛍️ Shop All Products</h1>
+    <div className="mt-20">
+      <h1 className="text-3xl font-bold mb-4">Shop</h1>
+      <div className="">
+        {categories.map((cat) => (
+          <button
+            onClick={() => setCategory(cat)}
+            key={cat}
+            className={`${
+              cat == category ? "bg-blue-500" : "bg-gray-300"
+            } hover:bg-blue-600 text-white py-2 px-4 rounded mr-2`}
+          >
+            {cat}
+          </button>
+        ))}
+        <select
+          name="sort"
+          onChange={(e) => setSort(e.target.value)}
+          className=""
+        >
+          <option value="">Sort By</option>
+          <option value="lowest">Lowest Price</option>
+          <option value="highest">Highest Price</option>
+          {/* Add more sorting options as needed */}
+        </select>
+      </div>
+      {/* Your Shop code here */}
 
-      <ShopFilters
-        categories={categories}
-        selected={selected}
-        setSelected={setSelected}
-        sort={sort}
-        setSort={setSort}
-      />
-
-      <ProductGrid products={sorted} />
+      <ProductGrid products={shopData} />
     </div>
   );
 };

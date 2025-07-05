@@ -47,7 +47,6 @@ export const authSlice = createSlice({
         state.email = null;
       })
       .addCase(registerThunk.fulfilled, (state, action) => {
-        console.log(action.payload);
 
         state.isAuthenticated = true;
         state.userId = action.payload.id;
@@ -71,7 +70,6 @@ export const authSlice = createSlice({
         state.email = null;
       })
       .addCase(checkAuthThunk.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.isAuthenticated = true;
         state.userId = action.payload.id;
         state.username = action.payload.username;

@@ -3,68 +3,62 @@ import Product from "../modles/product.model.js";
 
 export const addToCart = async (req, res) => {
   const user = req.user;
-  const { productId, quantity = 1 } = req.body;
+  const products = req.body.product; // 👈 array of { productId, quantity }
+
+  if (!user) {
+    return res.status(401).json({ message: "Unauthorized", success: false });
+  }
 
   try {
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized", success: false });
-    }
-
-    // 🔎 Check if product exists
-    const product = await Product.findById(productId);
-    if (!product) {
-      return res
-        .status(404)
-        .json({ message: "Product not found", success: false });
-    }
-
-    // 🛒 Find user's cart
+    // Fetch or create cart
     let cart = await Cart.findOne({ userId: user.id });
     if (!cart) {
-      const newCart = await Cart.create({
-        userId: user.id,
-        items: [
-          {
-            productId,
-            quantity,
-            price: product.price,
-          },
-        ],
-        totalPrice: product.price * quantity,
-      });
-      return res.json({
-        message: "Product added to cart",
-        success: true,
-        cart: newCart,
-      });
+      cart = new Cart({ userId: user.id, items: [], totalPrice: 0 });
     }
-    const existingItem = cart.items.find(
-      (item) => item.productId.toString() === productId
-    );
 
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      cart.items.push({
-        productId,
-        quantity,
-        price: product.price,
-      });
+    // Loop through each product
+    for (const item of products) {
+      const { productId, quantity } = item;
+      const product = await Product.findById(productId);
+
+      if (!product) {
+        return res.status(404).json({
+          message: `Product not found: ${productId}`,
+          success: false,
+        });
+      }
+
+      // Check if item already exists
+      const existingItem = cart.items.find(
+        (i) => i.productId.toString() === productId
+      );
+
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        cart.items.push({
+          productId,
+          quantity,
+          price: product.price,
+        });
+      }
     }
-    // 💰 Recalculate totalPrice
+
+    // Recalculate total price
     cart.totalPrice = cart.items.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (sum, item) => sum + item.price * item.quantity,
       0
     );
 
     await cart.save();
+
     return res.json({
-      message: "Product added to cart",
+      message: "Products added to cart",
       success: true,
       cart,
     });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     return res.status(500).json({
       message: "An error occurred while adding to cart",
       success: false,
@@ -78,7 +72,9 @@ export const getCart = async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "Unauthorized", success: false });
     }
-    const cart = await Cart.findOne({ userId: user.id });
+    const cart = await Cart.findOne({ userId: user.id }).populate(
+      "items.productId"
+    );
     if (!cart) {
       return res
         .status(404)
@@ -99,19 +95,23 @@ export const getCart = async (req, res) => {
 };
 export const updateCartItemQuantity = async (req, res) => {
   const user = req.user;
+  console.log(req.user, "request.user", user);
   const { productId, quantity = 1 } = req.body;
+  console.log(productId, quantity, "req.body");
   try {
     if (!user) {
       return res.status(401).json({ message: "Unauthorized", success: false });
     }
-    const cart = await Cart.findOne({ userId: user.id });
+    const cart = await Cart.findOne({ userId: user.id }).populate(
+      "items.productId"
+    );
     if (!cart) {
       return res
         .status(404)
         .json({ message: "Cart not found", success: false });
     }
     const item = cart.items.find(
-      (item) => item.productId.toString() === productId
+      (item) => item.productId._id.toString() === productId
     );
     if (!item) {
       return res

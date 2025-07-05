@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const loginThunk = createAsyncThunk(
   "auth/login",
-  async ({ email, password }, { RejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
@@ -19,13 +19,13 @@ export const loginThunk = createAsyncThunk(
       return data.user;
     } catch (error) {
       console.log(error);
-      return RejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 export const registerThunk = createAsyncThunk(
   "auth/register",
-  async ({ email, password, username }, { RejectWithValue }) => {
+  async ({ email, password, username }, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/auth/register`,
@@ -41,13 +41,13 @@ export const registerThunk = createAsyncThunk(
       return data.user;
     } catch (error) {
       console.log(error);
-      return RejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
 export const checkAuthThunk = createAsyncThunk(
   "auth/checkAuth",
-  async (_, { RejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/auth/is-auth`,
@@ -58,7 +58,7 @@ export const checkAuthThunk = createAsyncThunk(
       return data.user;
     } catch (error) {
       console.log(error);
-      return RejectWithValue(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );

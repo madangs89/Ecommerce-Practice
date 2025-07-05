@@ -8,10 +8,12 @@ import { useEffect } from "react";
 import { checkAuthThunk } from "./app/slice/thunk/authThunk";
 import Auth from "./component/Auth";
 import UserProfile from "./component/UserProfile";
+import { getProductThunk } from "./app/slice/thunk/productThunk";
+import { addToCartThunk } from "./app/slice/thunk/cartThunk";
+
 const Navbar = lazy(() => import("./component/Navbar"));
 const ProductCard = lazy(() => import("./component/ProductCard"));
 const Home = lazy(() => import("./pages/Home"));
-
 const Shop = lazy(() => import("./pages/Shop"));
 const ProductDetails = lazy(() => import("./pages/ProductDetails"));
 const CartPage = lazy(() => import("./pages/CartPage"));
@@ -22,15 +24,24 @@ const AuthPage = lazy(() => import("./pages/AuthPage"));
 const App = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  const checkAuth = async () => {
-    const data = await dispatch(checkAuthThunk());
-    console.log(data);
-  };
-  useEffect(() => {
-    checkAuth();
-  }, []);
 
-  console.log(isAuth);
+  // ✅ Simplified version - dispatch calls directly
+  useEffect(() => {
+    dispatch(getProductThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(checkAuthThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isAuth) {
+      let data = JSON.parse(localStorage.getItem("cart"));
+      if (data != null || data?.length > 0) {
+        dispatch(addToCartThunk({ product: [...data] }));
+      }
+    }
+  }, [dispatch, isAuth]);
 
   return (
     <>

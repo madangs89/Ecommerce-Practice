@@ -9,31 +9,36 @@ const Navbar = () => {
     <header className="bg-white shadow-md fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
         {/* Left: Logo */}
-        <Link to="/" className="text-2xl font-bold text-blue-600">ShopifyX</Link>
+        <Link to="/" className="text-2xl font-bold text-blue-600">
+          ShopifyX
+        </Link>
 
         {/* Middle: Desktop Nav + Search */}
         <nav className="hidden md:flex items-center space-x-6">
-          <a href="/" className="text-gray-700 hover:text-blue-600 font-medium">
+          <Link
+            to="/"
+            className="text-gray-700 hover:text-blue-600 font-medium"
+          >
             Home
-          </a>
-          <a
-            href="/shop"
+          </Link>
+          <Link
+            to="/shop"
             className="text-gray-700 hover:text-blue-600 font-medium"
           >
             Shop
-          </a>
-          <a
-            href="/about"
+          </Link>
+          <Link
+            to="/about"
             className="text-gray-700 hover:text-blue-600 font-medium"
           >
             About
-          </a>
-          <a
-            href="/contact"
+          </Link>
+          <Link
+            to="/contact"
             className="text-gray-700 hover:text-blue-600 font-medium"
           >
             Contact
-          </a>
+          </Link>
           <input
             type="text"
             placeholder="Search..."
@@ -43,12 +48,12 @@ const Navbar = () => {
 
         {/* Right: Icons */}
         <div className="flex items-center gap-4">
-          <a href="/cart" className="text-gray-700 hover:text-blue-600">
+          <Link to="/cart" className="text-gray-700 hover:text-blue-600">
             <ShoppingCart size={22} />
-          </a>
-          <a href="/auth" className="text-gray-700 hover:text-blue-600">
+          </Link>
+          <Link to="/auth" className="text-gray-700 hover:text-blue-600">
             <User size={22} />
-          </a>
+          </Link>
 
           {/* Mobile Menu Button */}
           <button
@@ -63,21 +68,21 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t px-4 pb-4 space-y-3">
-          <a href="/" className="block text-gray-700 hover:text-blue-600">
+          <Link to="/" className="block text-gray-700 hover:text-blue-600">
             Home
-          </a>
-          <a href="/shop" className="block text-gray-700 hover:text-blue-600">
+          </Link>
+          <Link to="/shop" className="block text-gray-700 hover:text-blue-600">
             Shop
-          </a>
-          <a href="/about" className="block text-gray-700 hover:text-blue-600">
+          </Link>
+          <Link to="/about" className="block text-gray-700 hover:text-blue-600">
             About
-          </a>
-          <a
-            href="/contact"
+          </Link>
+          <Link
+            to="/contact"
             className="block text-gray-700 hover:text-blue-600"
           >
             Contact
-          </a>
+          </Link>
           <input
             type="text"
             placeholder="Search..."
